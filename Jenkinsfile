@@ -2,12 +2,12 @@ pipeline {
     agent any
 
     environment {
-        AWS_DEFAULT_REGION = 'us-east-1'
-        TF_VAR_key_name = 'eks2'  // SSH key name in AWS
+        AWS_DEFAULT_REGION = "us-east-1"
     }
 
     stages {
-        stage('Checkout') {
+
+        stage('Clone Repository') {
             steps {
                 git branch: 'main', url: 'https://github.com/Oendrella-ti/aws'
             }
@@ -15,36 +15,21 @@ pipeline {
 
         stage('Terraform Init') {
             steps {
-                sh 'terraform init'
+                bat 'terraform init -reconfigure -input=false'
             }
         }
 
         stage('Terraform Plan') {
             steps {
-                sh 'terraform plan -out=tfplan'
+                bat 'terraform plan -out=tfplan'
             }
         }
 
         stage('Terraform Apply') {
             steps {
-                input message: 'Approve Terraform Apply?'
-                sh 'terraform apply -auto-approve tfplan'
+                bat 'terraform apply -input=false tfplan'
             }
         }
 
-        stage('Outputs') {
-            steps {
-                sh 'terraform output'
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Terraform deployed successfully!'
-        }
-        failure {
-            echo 'Terraform deployment failed.'
-        }
     }
 }
