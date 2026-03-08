@@ -4,6 +4,9 @@ pipeline {
     environment {
         // Adjust this path if Terraform is installed elsewhere
         PATH = "D:/Interview_Project/Selfmade/aws"
+         sh 'pwd'                // shows current directory
+         sh 'ls -al'             // lists all files in workspace
+         sh 'terraform version'
     }
 
     stages {
