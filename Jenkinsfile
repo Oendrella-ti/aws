@@ -1,8 +1,13 @@
 pipeline {
     agent any
 
+    environment {
+        // Optional: path to Terraform if not in default PATH
+        PATH = "D:/Interview_Project/Selfmade/aws"
+    }
+
     stages {
-        stage('Checkout') {
+        stage('Checkout Repo') {
             steps {
                 checkout scm
             }
