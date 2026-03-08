@@ -2,14 +2,15 @@ pipeline {
     agent any
 
     environment {
-        // Optional: path to Terraform if not in default PATH
+        // Adjust this path if Terraform is installed elsewhere
         PATH = "D:/Interview_Project/Selfmade/aws"
     }
 
     stages {
         stage('Checkout Repo') {
             steps {
-                checkout scm
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], 
+                          userRemoteConfigs: [[url: 'https://github.com/Oendrella-ti/aws']]])
             }
         }
 
