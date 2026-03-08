@@ -1,6 +1,5 @@
 terraform {
   required_version = ">= 1.4.0"
-
   backend "s3" {
     bucket         = "tapari09081998"  # S3 bucket name
     key            = "terraform.tfstate"  # path inside bucket
