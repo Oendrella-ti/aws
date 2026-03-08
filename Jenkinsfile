@@ -43,7 +43,7 @@ pipeline {
                     string(credentialsId: 'aws-access-key', variable: 'AWS_ACCESS_KEY_ID'),
                     string(credentialsId: 'aws-secret-key', variable: 'AWS_SECRET_ACCESS_KEY')
                 ]) {
-                    bat 'terraform apply -input=false tfplan'
+                    bat 'terraform apply -auto-approve tfplan'
                 }
             }
         }
