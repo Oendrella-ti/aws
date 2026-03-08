@@ -2,40 +2,47 @@ pipeline {
     agent any
 
     environment {
-        // Adjust this path if Terraform is installed elsewhere
-        PATH = "D:/Interview_Project/Selfmade/aws"
-         sh 'pwd'                // shows current directory
-         sh 'ls -al'             // lists all files in workspace
-         sh 'terraform version'
+        // Optional: specify Terraform binary path if not in default PATH
+        TERRAFORM = "D:/Interview_Project/Selfmade/aws"
     }
 
     stages {
-        stage('Checkout Repo') {
+        stage('Checkout Repository') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/main']], 
-                          userRemoteConfigs: [[url: 'https://github.com/Oendrella-ti/aws']]])
-                sh 'pwd'                // shows current directory
-                sh 'ls -al'             // lists all files in workspace
-                sh 'terraform version'
+                echo "Checking out repository..."
+                checkout scm
+                sh 'pwd'
+                sh 'ls -al'
             }
         }
 
         stage('Terraform Init') {
             steps {
-                sh 'terraform init'
+                echo "Initializing Terraform..."
+                sh "${TERRAFORM} init"
             }
         }
 
         stage('Terraform Plan') {
             steps {
-                sh 'terraform plan'
+                echo "Creating Terraform plan..."
+                sh "${TERRAFORM} plan -out=tfplan"
             }
         }
 
         stage('Terraform Apply') {
             steps {
-                sh 'terraform apply -auto-approve'
+                echo "Applying Terraform plan..."
+                // Use -auto-approve for non-interactive run
+                sh "${TERRAFORM} apply -auto-approve tfplan"
             }
+        }
+    }
+
+    post {
+        always {
+            echo "Pipeline finished. Listing workspace:"
+            sh 'ls -al'
         }
     }
 }
