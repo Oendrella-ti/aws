@@ -11,6 +11,9 @@ pipeline {
             steps {
                 checkout([$class: 'GitSCM', branches: [[name: '*/main']], 
                           userRemoteConfigs: [[url: 'https://github.com/Oendrella-ti/aws']]])
+                sh 'pwd'                // shows current directory
+                sh 'ls -al'             // lists all files in workspace
+                sh 'terraform version'
             }
         }
 
